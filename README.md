@@ -12,7 +12,7 @@ Required Unity after 2018.3
 
 ### Installing
 
-[Download package](https://github.com/kdw9502/UnitySQLiteAsync/raw/master/SQLiteAsync.unitypackage) and import to your Unity project
+[Download package](https://github.com/kdw9502/UnitySQLiteAsync/raw/master/UnitySQLiteAsync.unitypackage) and import to your Unity project
 
 Package contains [UniTask](https://github.com/Cysharp/UniTask), [sqlite-net](https://github.com/praeclarum/sqlite-net), [sqlite-net-extensions](https://bitbucket.org/twincoders/sqlite-net-extensions)
 
