@@ -1,6 +1,6 @@
 # UnitySQLiteAsync
 
-Asynchronous SQLite-net support for Unity
+UnitySQLiteAsync is asynchronous SQLite-net support for Unity.
 
 [sqlite-net](https://github.com/praeclarum/sqlite-net) is simple, powerful, cross-platform SQLite client and ORM for .NET. But sqlite-net's Asynchronous API based on Threading, it's heavy and not matched to Unity threading(single-thread). So I made Asynchronous API based on [UniTask](https://github.com/Cysharp/UniTask), which is more suitable for Unity.
 
@@ -63,7 +63,7 @@ public async void Main()
     
     await db.CreateTableAsync<Customer> ();
     
-    await AddCustomer(new Customer());
+    await AddCustomerAsync(new Customer());
     var customer = await GetCustomerAsync(0);
 }
 ```
@@ -72,7 +72,7 @@ public async void Main()
 Since UniTask runs only in play mode, use [Unity Test Runner](https://docs.unity3d.com/2019.1/Documentation/Manual/testing-editortestsrunner.html) with PlayMode. Unity Test Runner also help you to test in device.
 ![testRunner](https://user-images.githubusercontent.com/21076531/69316848-0276b200-0c7d-11ea-884f-f4bf43f99556.png)
 
-Android (V30, API Level 29) passed all 195 tests.
+Android (V30, API Level 28) passed all 195 tests.
 
 iOS (iPhone 6+, iOS 12.4.3) passed all 195 tests.
 
@@ -81,4 +81,4 @@ All the tests were imported from [sqlite-net](https://github.com/praeclarum/sqli
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
