@@ -1,5 +1,5 @@
 using System;
-using LitJson;
+using UnityEngine;
 
 namespace SQLiteNetExtensions.Extensions.TextBlob.Serializers
 {
@@ -7,12 +7,12 @@ namespace SQLiteNetExtensions.Extensions.TextBlob.Serializers
     {
         public string Serialize(object element)
         {
-            return LitJson.JsonMapper.ToJson(element);
+            return JsonUtility.ToJson(element);
         }
 
         public object Deserialize(string text, Type type)
         {
-            return LitJson.JsonMapper.ToObject(text, type);
+            return JsonUtility.FromJson(text, type);
         }
     }
 }
