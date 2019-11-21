@@ -608,7 +608,7 @@ namespace SQLite.Tests
 				var task = await query.FirstAsync();
 				
 				//if Exception not occurs assert
-				Assert.IsFalse(true);
+				Assert.Fail("InvalidOperationException Exception expected");
 			}
 			catch (Exception e)
 			{
