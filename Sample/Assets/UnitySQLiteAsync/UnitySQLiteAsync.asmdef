@@ -1,7 +1,7 @@
 {
     "name": "SQLiteAsync",
     "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+        "UniRx.Async"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
@@ -10,6 +10,5 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": []
+    "defineConstraints": []
 }
