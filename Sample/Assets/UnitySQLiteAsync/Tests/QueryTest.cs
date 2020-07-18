@@ -26,7 +26,7 @@ namespace SQLite.Tests
 		[Test]
 		public void QueryGenericObject ()
 		{
-			var path = Path.GetTempFileName ();
+			var path = TestPath.GetTempFileName ();
 			var db = new SQLiteConnection (path, true);
 
 			db.Execute ("create table G(Value integer not null)");

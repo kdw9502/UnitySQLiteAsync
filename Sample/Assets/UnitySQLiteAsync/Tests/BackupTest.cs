@@ -24,8 +24,8 @@ namespace SQLite.Tests
 		[UnityTest]
 		public IEnumerator BackupOneTable() => UniTask.ToCoroutine(async ()=>
 		{
-			var pathSrc = Path.GetTempFileName();
-			var pathDest = Path.GetTempFileName();
+			var pathSrc = TestPath.GetTempFileName();
+			var pathDest = TestPath.GetTempFileName();
 
 			var db = new SQLiteAsyncConnection(pathSrc);
 			await db.CreateTableAsync<OrderLine>();
