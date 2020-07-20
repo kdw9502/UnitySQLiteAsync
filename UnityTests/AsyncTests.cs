@@ -84,39 +84,34 @@ namespace SQLite.Tests
 			
 			await globalConn.CreateTableAsync<Customer> ();
 			
-			var threadCount = 0;
 			var n = 100;
 			var errors = new List<string> ();
 			for (var i = 0; i < n; i++) {
 				var ii = i;
-
-
-                await UniTask.Run (async delegate {
-					try {
-						var conn = GetConnection ();
-						var obj = new Customer {
-							FirstName = ii.ToString (),
-						};
-						await conn.InsertAsync (obj);
-						if (obj.Id == 0) {
-							lock (errors) {
-								errors.Add ("Bad Id");
-							}
-						}
-						var obj2 = (await (from c in conn.Table<Customer> () where c.Id == obj.Id select c).ToListAsync()).FirstOrDefault();
-						if (obj2 == null) {
-							lock (errors) {
-								errors.Add ("Failed query");
-							}
-						}
-					}
-					catch (Exception ex) {
+				try {
+					var conn = GetConnection ();
+					var obj = new Customer {
+						FirstName = ii.ToString (),
+					};
+					await conn.InsertAsync (obj);
+					if (obj.Id == 0) {
 						lock (errors) {
-							errors.Add (ex.Message);
+							errors.Add ("Bad Id");
 						}
 					}
-					threadCount++;
-                });
+					var obj2 = (await (from c in conn.Table<Customer> () where c.Id == obj.Id select c).ToListAsync()).FirstOrDefault();
+					if (obj2 == null) {
+						lock (errors) {
+							errors.Add ("Failed query");
+						}
+					}
+				}
+				catch (Exception ex) {
+					lock (errors) {
+						errors.Add (ex.Message);
+					}
+				}
+                
 			}
 
 			var count = await globalConn.Table<Customer>().CountAsync();

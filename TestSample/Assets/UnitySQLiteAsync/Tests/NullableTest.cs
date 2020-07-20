@@ -14,6 +14,7 @@ using NUnit.Framework;
 #endif
 
 using System.IO;
+using UnityEngine;
 
 namespace SQLite.Tests
 {
@@ -30,7 +31,7 @@ namespace SQLite.Tests
 			public override bool Equals(object obj)
 			{
 				NullableIntClass other = (NullableIntClass)obj;
-				return this.ID == other.ID && this.NullableInt == other.NullableInt;
+				return this.ID == other.ID && (this.NullableInt == other.NullableInt || NullableInt==null && other.NullableInt == null);
 			}
 			
 			public override int GetHashCode ()
@@ -77,7 +78,7 @@ namespace SQLite.Tests
 			public override bool Equals(object obj)
 			{
 				NullableFloatClass other = (NullableFloatClass)obj;
-				return this.ID == other.ID && this.NullableFloat == other.NullableFloat;
+				return this.ID == other.ID && (this.NullableFloat == other.NullableFloat || this.NullableFloat == null && other.NullableFloat == null);
 			}
 			
 			public override int GetHashCode ()
@@ -106,7 +107,6 @@ namespace SQLite.Tests
 			NullableFloatClass[] results = db.Table<NullableFloatClass>().OrderBy(x => x.ID).ToArray();
 
 			Assert.AreEqual(4, results.Length);
-
 			Assert.AreEqual(withNull, results[0]);
 			Assert.AreEqual(with0, results[1]);
 			Assert.AreEqual(with1, results[2]);
@@ -268,7 +268,8 @@ namespace SQLite.Tests
 			public override bool Equals (object obj)
 			{
 				var other = (NullableEnumClass)obj;
-				return this.ID == other.ID && this.NullableIntEnum == other.NullableIntEnum && this.NullableTextEnum == other.NullableTextEnum;
+				return this.ID == other.ID && (this.NullableIntEnum == other.NullableIntEnum || NullableIntEnum == null && other.NullableIntEnum == null) 
+				                           && (this.NullableTextEnum == other.NullableTextEnum || NullableTextEnum == null && other.NullableTextEnum == null);
 			}
 
 			public override int GetHashCode ()

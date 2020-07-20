@@ -2397,11 +2397,7 @@ namespace SQLite
 			CreateFlags = createFlags;
 
 			var typeInfo = type.GetTypeInfo ();
-			var tableAttr =
-				typeInfo.CustomAttributes
-						.Where (x => x.AttributeType == typeof (TableAttribute))
-						.Select (x => (TableAttribute)Orm.InflateAttribute (x))
-						.FirstOrDefault ();
+			var tableAttr = (TableAttribute)type.GetCustomAttributes (typeof (TableAttribute), true).FirstOrDefault ();
 
 			TableName = (tableAttr != null && !string.IsNullOrEmpty (tableAttr.Name)) ? tableAttr.Name : MappedType.Name;
 			WithoutRowId = tableAttr != null ? tableAttr.WithoutRowId : false;
@@ -2520,12 +2516,10 @@ namespace SQLite
 
 			public Column (PropertyInfo prop, CreateFlags createFlags = CreateFlags.None)
 			{
-				var colAttr = prop.CustomAttributes.FirstOrDefault (x => x.AttributeType == typeof (ColumnAttribute));
+				var colAttr = (ColumnAttribute)prop.GetCustomAttributes(typeof(ColumnAttribute), true).FirstOrDefault();
 
 				_prop = prop;
-				Name = (colAttr != null && colAttr.ConstructorArguments.Count > 0) ?
-						colAttr.ConstructorArguments[0].Value?.ToString () :
-						prop.Name;
+				Name = colAttr == null ? prop.Name : colAttr.Name;
 				//If this type is Nullable<T> then Nullable.GetUnderlyingType returns the T, otherwise it returns null, so get the actual type instead
 				ColumnType = Nullable.GetUnderlyingType (prop.PropertyType) ?? prop.PropertyType;
 				Collation = Orm.Collation (prop);
@@ -2542,8 +2536,8 @@ namespace SQLite
 				if (!Indices.Any ()
 					&& !IsPK
 					&& ((createFlags & CreateFlags.ImplicitIndex) == CreateFlags.ImplicitIndex)
-					&& Name.EndsWith (Orm.ImplicitIndexSuffix, StringComparison.OrdinalIgnoreCase)
-					) {
+					&& Name.EndsWith (Orm.ImplicitIndexSuffix, StringComparison.OrdinalIgnoreCase)) 
+				{
 					Indices = new IndexedAttribute[] { new IndexedAttribute () };
 				}
 				IsNullable = !(IsPK || Orm.IsMarkedNotNull (prop));
@@ -2705,14 +2699,12 @@ namespace SQLite
 
 		public static string Collation (MemberInfo p)
 		{
-			return
-				(p.CustomAttributes
-				 .Where (x => typeof (CollationAttribute) == x.AttributeType)
-				 .Select (x => {
-					 var args = x.ConstructorArguments;
-					 return args.Count > 0 ? ((args[0].Value as string) ?? "") : "";
-				 })
-				 .FirstOrDefault ()) ?? "";
+			var attrs = p.GetCustomAttributes (typeof(CollationAttribute), true);
+
+			if (attrs.Length > 0) 
+				return ((CollationAttribute)attrs [0]).Value;
+			return string.Empty;
+
 		}
 
 		public static bool IsAutoInc (MemberInfo p)
@@ -2755,20 +2747,15 @@ namespace SQLite
 
 		public static IEnumerable<IndexedAttribute> GetIndices (MemberInfo p)
 		{
-			var indexedInfo = typeof (IndexedAttribute).GetTypeInfo ();
-			return
-				p.CustomAttributes
-				 .Where (x => indexedInfo.IsAssignableFrom (x.AttributeType.GetTypeInfo ()))
-				 .Select (x => (IndexedAttribute)InflateAttribute (x));
+			var attrs = p.GetCustomAttributes(typeof(IndexedAttribute), true);
+			return attrs.Cast<IndexedAttribute>();
 		}
 
 		public static int? MaxStringLength (PropertyInfo p)
 		{
-			var attr = p.CustomAttributes.FirstOrDefault (x => x.AttributeType == typeof (MaxLengthAttribute));
-			if (attr != null) {
-				var attrv = (MaxLengthAttribute)InflateAttribute (attr);
-				return attrv.Value;
-			}
+			var attrs = p.GetCustomAttributes (typeof(MaxLengthAttribute), true);
+			if (attrs.Length > 0)
+				return ((MaxLengthAttribute)attrs [0]).Value;
 			return null;
 		}
 
