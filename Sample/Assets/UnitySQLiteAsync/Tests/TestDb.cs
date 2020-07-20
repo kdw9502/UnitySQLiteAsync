@@ -1,5 +1,8 @@
 using System;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
+using Random = System.Random;
 
 #if NETFX_CORE
 class DescriptionAttribute : Attribute
@@ -79,12 +82,7 @@ namespace SQLite.Tests
 	{
 		public static string GetTempFileName ()
 		{
-#if UNITY_ANDROID && !UNITY_EDITOR
-			return Guid.NewGuid().ToString() + ".sqlite";
-#else
-			return Path.GetTempFileName ();
-#endif
-
+			return Path.Combine(Application.temporaryCachePath,  $"{Guid.NewGuid()}.sqlite");
 		}
 	}
 }

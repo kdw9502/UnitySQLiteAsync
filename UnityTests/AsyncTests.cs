@@ -40,7 +40,7 @@ namespace SQLite.Tests
 		[UnityTest]
 		public IEnumerator EnableWalAsync () => UniTask.ToCoroutine(async () => 
 		{
-			var path = Path.GetTempFileName ();
+			var path = TestPath.GetTempFileName ();
 			var connection = new SQLiteAsyncConnection (path);
 
 			await connection.EnableWriteAheadLoggingAsync ();
@@ -85,7 +85,7 @@ namespace SQLite.Tests
 			await globalConn.CreateTableAsync<Customer> ();
 			
 			var threadCount = 0;
-			var n = 500;
+			var n = 100;
 			var errors = new List<string> ();
 			for (var i = 0; i < n; i++) {
 				var ii = i;
@@ -162,7 +162,7 @@ namespace SQLite.Tests
 		{
 			SQLite.SQLiteConnectionPool.Shared.Reset ();
 
-			_connectionString = Path.Combine (Application.persistentDataPath, DatabaseName);
+			_connectionString = TestPath.GetTempFileName();
 			_path = _connectionString;
 			System.IO.File.Delete (_path);
 		}
@@ -178,10 +178,10 @@ namespace SQLite.Tests
 		{
 			string path = null;
 			var conn = GetConnection (ref path);
-			conn.CreateTableAsync<Customer> ();
+			await conn.CreateTableAsync<Customer> ();
 
 			// drop it...
-			conn.DropTableAsync<Customer> ();
+			await conn.DropTableAsync<Customer> ();
 
 			// check...
 			using (SQLiteConnection check = new SQLiteConnection (path)) {

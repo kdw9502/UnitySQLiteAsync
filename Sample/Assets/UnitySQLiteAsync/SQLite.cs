@@ -340,7 +340,11 @@ namespace SQLite
 		/// </summary>
 		public void EnableWriteAheadLogging()
 		{
+#if UNITY_ANDROID || !UNITY_EDITOR
+			// error occurs in android api 28
+#else
 			ExecuteScalar<string> ("PRAGMA journal_mode=WAL");
+#endif
 		}
 
 		/// <summary>

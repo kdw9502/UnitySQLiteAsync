@@ -162,7 +162,7 @@ namespace SQLite.Tests
 		{
 			SQLite.SQLiteConnectionPool.Shared.Reset ();
 
-			_connectionString = Path.Combine (Application.persistentDataPath, DatabaseName);
+			_connectionString = TestPath.GetTempFileName();
 			_path = _connectionString;
 			System.IO.File.Delete (_path);
 		}
@@ -178,10 +178,10 @@ namespace SQLite.Tests
 		{
 			string path = null;
 			var conn = GetConnection (ref path);
-			conn.CreateTableAsync<Customer> ();
+			await conn.CreateTableAsync<Customer> ();
 
 			// drop it...
-			conn.DropTableAsync<Customer> ();
+			await conn.DropTableAsync<Customer> ();
 
 			// check...
 			using (SQLiteConnection check = new SQLiteConnection (path)) {

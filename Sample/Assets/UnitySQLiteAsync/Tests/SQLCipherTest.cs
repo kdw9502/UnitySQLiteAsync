@@ -139,7 +139,7 @@ namespace SQLite.Tests
 				Assert.AreEqual ("512", db.ExecuteScalar<string> ("PRAGMA page_size;"));
 			}
 		}
-
+#if !UNITY_ANDROID
 		[Test]
 		public void CheckJournalModeForNonKeyed ()
 		{
@@ -148,5 +148,6 @@ namespace SQLite.Tests
 				Assert.AreEqual ("wal", db.ExecuteScalar<string> ("PRAGMA journal_mode;"));
 			}
 		}
+#endif
 	}
 }
