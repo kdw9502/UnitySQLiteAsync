@@ -19,9 +19,9 @@ Package contains [UniTask](https://github.com/Cysharp/UniTask), [sqlite-net](htt
 ## Example
 You can also find example in [sqlite-net Example](https://github.com/praeclarum/sqlite-net#example-time) and [Document](https://github.com/praeclarum/sqlite-net/wiki). you need to replace Task to UniTask, Task.Result to await UniTask.
 
-To create and use new database, use path with Application.persistentDataPath.
+To create and use new database, __use path with Application.persistentDataPath.__
 
-To modify prepared database, insert database file in Assets/StreamingAssets and use path with Application.streamingAssetsPath
+To modify prepared database, insert database file in Assets/StreamingAssets and use path with Application.streamingAssetsPath.
 
 The library contains simple attributes that you can use to control the construction of tables
 ```c#
@@ -44,7 +44,7 @@ Insert row example
 ```c#
 public async UniTask AddCustomerAsync(Customer customer)
 {
-    var databasePath = Application.persistentDataPath + databaseName;
+    var databasePath = Application.persistentDataPath + "/" + databaseName;
     var db = new SQLiteAsyncConnection(databasePath);
 
     await db.InsertAsync(customer);
@@ -54,7 +54,7 @@ Get example
 ```c#
 public async UniTask<Customer> GetCustomerAsync(int id)
 {
-    var databasePath = Application.persistentDataPath + databaseName;
+    var databasePath = Path.Combine(Application.persistentDataPath, databaseName);
     var db = new SQLiteAsyncConnection(databasePath);
     
     Customer customer = await db.GetAsync<Customer> (customer.Id);
@@ -65,7 +65,7 @@ Create(or Update new column) example
 ```c#
 public async void Main()
 {
-    var databasePath = Application.persistentDataPath + databaseName;
+    var databasePath = $"{Application.persistentDataPath}/{databaseName}";
     var db = new SQLiteAsyncConnection(databasePath);
     
     await db.CreateTableAsync<Customer> ();
