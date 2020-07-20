@@ -12,12 +12,16 @@ Required Unity after 2018.3
 
 ### Installing
 
-[Download package](https://github.com/kdw9502/UnitySQLiteAsync/raw/master/UnitySQLiteAsync.unitypackage) and import to your Unity project
+[Download package](https://github.com/kdw9502/UnitySQLiteAsync/raw/master/UnitySQLiteAsync.unitypackage) and import to your Unity project. You don't nead to import test scripts in UnitySQLiteAsync folder.
 
 Package contains [UniTask](https://github.com/Cysharp/UniTask), [sqlite-net](https://github.com/praeclarum/sqlite-net), [sqlite-net-extensions](https://bitbucket.org/twincoders/sqlite-net-extensions)
 
 ## Example
 You can also find example in [sqlite-net Example](https://github.com/praeclarum/sqlite-net#example-time) and [Document](https://github.com/praeclarum/sqlite-net/wiki). you need to replace Task to UniTask, Task.Result to await UniTask.
+
+To create and use new database, __use path with Application.persistentDataPath.__
+
+To modify prepared database, insert database file in Assets/StreamingAssets and use path with Application.streamingAssetsPath.
 
 The library contains simple attributes that you can use to control the construction of tables
 ```c#
@@ -40,6 +44,7 @@ Insert row example
 ```c#
 public async UniTask AddCustomerAsync(Customer customer)
 {
+    var databasePath = Application.persistentDataPath + "/" + databaseName;
     var db = new SQLiteAsyncConnection(databasePath);
 
     await db.InsertAsync(customer);
@@ -49,6 +54,7 @@ Get example
 ```c#
 public async UniTask<Customer> GetCustomerAsync(int id)
 {
+    var databasePath = Path.Combine(Application.persistentDataPath, databaseName);
     var db = new SQLiteAsyncConnection(databasePath);
     
     Customer customer = await db.GetAsync<Customer> (customer.Id);
@@ -59,6 +65,7 @@ Create(or Update new column) example
 ```c#
 public async void Main()
 {
+    var databasePath = $"{Application.persistentDataPath}/{databaseName}";
     var db = new SQLiteAsyncConnection(databasePath);
     
     await db.CreateTableAsync<Customer> ();
@@ -72,9 +79,9 @@ public async void Main()
 Since UniTask runs only in play mode, use [Unity Test Runner](https://docs.unity3d.com/2019.1/Documentation/Manual/testing-editortestsrunner.html) with PlayMode. Unity Test Runner also help you to test in device.
 ![testRunner](https://user-images.githubusercontent.com/21076531/69316848-0276b200-0c7d-11ea-884f-f4bf43f99556.png)
 
-Android (V30, API Level 28) passed all 195 tests.
+Android (V30, API Level 29) passed all 195 tests.
 
-iOS (iPhone 6+, iOS 12.4.3) passed all 195 tests.
+iOS (iPad 7th gen, iOS 13.5.1) passed all 195 tests.
 
 
 All the tests were imported from [sqlite-net](https://github.com/praeclarum/sqlite-net) and converted to the Unitask version.
