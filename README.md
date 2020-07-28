@@ -77,6 +77,7 @@ public async void Main()
 
 ## Running the tests
 Since UniTask runs only in play mode, use [Unity Test Runner](https://docs.unity3d.com/2019.1/Documentation/Manual/testing-editortestsrunner.html) with PlayMode. Unity Test Runner also help you to test in device.
+
 ![testRunner](https://user-images.githubusercontent.com/21076531/69316848-0276b200-0c7d-11ea-884f-f4bf43f99556.png)
 
 Android (V30, API Level 29) passed all 195 tests.
