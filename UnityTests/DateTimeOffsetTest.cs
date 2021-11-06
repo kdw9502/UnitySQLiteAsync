@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using UniRx.Async;
+using Cysharp.Threading.Tasks;
 using UnityEngine.TestTools;
 #if NETFX_CORE
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;

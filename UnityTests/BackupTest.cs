@@ -13,7 +13,7 @@ using NUnit.Framework;
 #endif
 
 using System.IO;
-using UniRx.Async;
+using Cysharp.Threading.Tasks;
 using UnityEngine.TestTools;
 
 namespace SQLite.Tests

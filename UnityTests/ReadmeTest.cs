@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
 using NUnit.Framework.Internal;
-using UniRx.Async;
+using Cysharp.Threading.Tasks;
 using UnityEngine.TestTools;
 #if NETFX_CORE
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
