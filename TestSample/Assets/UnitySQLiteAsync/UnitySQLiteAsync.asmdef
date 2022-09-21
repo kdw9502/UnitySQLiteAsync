@@ -1,5 +1,6 @@
 {
     "name": "SQLiteAsync",
+    "rootNamespace": "",
     "references": [
         "UniTask"
     ],
