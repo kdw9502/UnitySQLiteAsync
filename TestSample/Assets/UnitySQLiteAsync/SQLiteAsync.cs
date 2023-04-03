@@ -209,14 +209,14 @@ namespace SQLite
 		/// </summary>
 		public UniTask CloseAsync ()
 		{
-			return UniTask.Run (() => {
+			return UniTask.RunOnThreadPool (() => {
 				SQLiteConnectionPool.Shared.CloseConnection (_connectionString);
 			});
 		}
 
 		UniTask<T> ReadAsync<T> (Func<SQLiteConnectionWithLock, T> read)
 		{
-			return UniTask.Run (() => {
+			return UniTask.RunOnThreadPool (() => {
 				var conn = GetConnection ();
 				using (conn.Lock ()) {
 					return read (conn);
@@ -227,7 +227,7 @@ namespace SQLite
 
 		UniTask<T> WriteAsync<T> (Func<SQLiteConnectionWithLock, T> write)
 		{
-			return UniTask.Run (() => {
+			return UniTask.RunOnThreadPool (() => {
 				var conn = GetConnection ();
 				using (conn.Lock ()) {
 					return write (conn);
@@ -1157,7 +1157,7 @@ namespace SQLite
 
 		UniTask<U> ReadAsync<U> (Func<SQLiteConnectionWithLock, U> read)
 		{
-			return UniTask.Run (() => {
+			return UniTask.RunOnThreadPool (() => {
 				var conn = (SQLiteConnectionWithLock)_innerQuery.Connection;
 				using (conn.Lock ()) {
 					return read (conn);
@@ -1167,7 +1167,7 @@ namespace SQLite
 
 		UniTask<U> WriteAsync<U> (Func<SQLiteConnectionWithLock, U> write)
 		{
-			return UniTask.Run (() => {
+			return UniTask.RunOnThreadPool (() => {
 				var conn = (SQLiteConnectionWithLock)_innerQuery.Connection;
 				using (conn.Lock ()) {
 					return write (conn);
